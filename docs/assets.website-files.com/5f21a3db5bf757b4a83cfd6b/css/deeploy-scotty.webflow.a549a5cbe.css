@@ -2646,8 +2646,7 @@ h4 {
 }
 
 .avatar.user {
-  margin-top: 0;
-  margin-left: 20px;
+  margin-left: 20px;           /* Push avatar to right of bubble */
   margin-right: 0;
 }
 
@@ -2665,16 +2664,21 @@ h4 {
 
 .chattext.user {
   width: auto;
+  max-width: 280px;
   font-weight: 700;
   line-height: 24px;
+  background: #daf0ff;           /* ✅ Light color */
+  border-radius: 15px;
+  padding: 10px 15px;
+  text-align: right;
 }
 
 .chattext_user {
+  display: flex;                /* ✅ REQUIRED to align */
   justify-content: flex-end;
   align-items: flex-start;
   margin-top: 25px;
   margin-bottom: 25px;
-  display: none;
 }
 
 .chatinput {

@@ -1,19 +1,13 @@
 import express from 'express';
 import fetch from 'node-fetch';
-import OpenAI from 'openai';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(express.static('docs')); // serve index.html + script.js
+app.use(express.static('docs'));
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-// Get Spotify Token
 let spotifyToken = '';
 
 async function getSpotifyToken() {
@@ -21,57 +15,61 @@ async function getSpotifyToken() {
     method: 'POST',
     headers: {
       'Authorization': 'Basic ' + Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64'),
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: 'grant_type=client_credentials'
+    body: 'grant_type=client_credentials',
   });
 
   const data = await res.json();
   spotifyToken = data.access_token;
-  console.log("Spotify token updated");
+  console.log('✅ Spotify token updated');
 }
 
 await getSpotifyToken();
+setInterval(getSpotifyToken, 1000 * 60 * 30);
 
-// Chat endpoint
 app.post('/api/chat', async (req, res) => {
-  const userMessage = req.body.message;
+  try {
+    console.log('💬 Incoming:', req.body.message);
 
-  // Get mood query from OpenAI
-  const aiResponse = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [
+    const moodQuery = 'chill lofi'; // hardcoded for test
+    console.log('🎵 Mood Query:', moodQuery);
+
+    const spotifyRes = await fetch(
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(moodQuery)}&type=playlist&limit=3`,
       {
-        role: "system",
-        content: "You help detect mood and generate a Spotify search query."
-      },
-      {
-        role: "user",
-        content: `User says: "${userMessage}". Reply ONLY with a short search term I can use for Spotify.`
+        headers: {
+          Authorization: `Bearer ${spotifyToken}`,
+        },
       }
-    ],
-  });
+    );
 
-  const moodQuery = aiResponse.choices[0].message.content.trim();
-  console.log("AI Query:", moodQuery);
+    const spotifyData = await spotifyRes.json();
+    console.log('👉 Spotify Status:', spotifyRes.status);
+    console.log('👉 Spotify raw:', spotifyData);
 
-  // Use Spotify Search API
-  const spotifyRes = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(moodQuery)}&type=playlist&limit=3`, {
-    headers: {
-      'Authorization': `Bearer ${spotifyToken}`
+    if (!spotifyData.playlists) {
+      console.log('❌ Spotify API returned no playlists:', spotifyData);
+      return res.status(500).json({ playlists: [], moodQuery, error: 'Spotify API error' });
     }
-  });
 
-  const data = await spotifyRes.json();
+    const playlists = spotifyData.playlists.items
+      .filter(item => item !== null && item !== undefined)
+      .map(item => ({
+        name: item.name,
+        url: item.external_urls.spotify
+      }));
 
-  const playlists = data.playlists.items.map(item => ({
-    name: item.name,
-    url: item.external_urls.spotify
-  }));
+    console.log('✅ Playlists:', playlists);
 
-  res.json({ playlists, moodQuery });
+    res.json({ playlists, moodQuery });
+
+  } catch (err) {
+    console.error('❌ Chat endpoint failed:', err);
+    res.status(500).json({ playlists: [], moodQuery: '', error: 'Server error' });
+  }
 });
 
 app.listen(3000, () => {
-  console.log("✅ Luna AI server running on http://localhost:3000");
+  console.log('✅ Server running on http://localhost:3000');
 });
