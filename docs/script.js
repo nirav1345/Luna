@@ -11,7 +11,7 @@ form.addEventListener('submit', async function (e) {
   // ✅ Create user bubble container
   const userBubble = document.createElement('div');
   userBubble.className = 'chattext_user';
-  userBubble.style.display = 'flex'; // Ensure it shows up
+  userBubble.style.display = 'flex';
 
   userBubble.innerHTML = `
     <h2 class="chattext user">${userMessage}</h2>
@@ -38,7 +38,7 @@ form.addEventListener('submit', async function (e) {
   const botText = botBubble.querySelector('h2');
 
   try {
-    const res = await fetch('/api/chat', {
+    const res = await fetch('https://luna-9xcx.onrender.com/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: userMessage }),
