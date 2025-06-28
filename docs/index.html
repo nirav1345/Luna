@@ -90,44 +90,35 @@
     <div class="chatboxunit">
 
 
-      <!-- Chat Body -->
-      <div class="chatbody">
-        <div class="chattext_bot">
-          <div class="avatar bot">
-            <img src="https://assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5fbd03f3d83094e45ca0dc53_BrandScotty_Symbol.svg" alt="">
-          </div>
-          <h2 class="chattext bot">
-            Hi, I’m Luna.<br><br>
-            You can share how you feel 🎧<br>
-             I’ll find songs that fit your mood. Just type a few words<br><br>
-            I’ll do the rest. Let’s vibe!<br>
-          </h2>
-        </div>
+<!-- Chat Body -->
+<div class="chatbody">
+  <div class="chattext_bot">
+    <div class="avatar bot">
+      <img src="https://assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5fbd03f3d83094e45ca0dc53_BrandScotty_Symbol.svg" alt="Bot Avatar">
+    </div>
+    <h2 class="chattext bot">
+      Hi, I’m Luna.<br><br>
+      You can share how you feel 🎧<br>
+      I’ll find songs that fit your mood. Just type a few words<br><br>
+      I’ll do the rest. Let’s vibe!<br>
+    </h2>
+  </div>
 
-        <div class="chattext_user">
-          <h2 class="chattext user">Hello! Please call me.</h2>
-          <div class="avatar user">
-            <img src="https://assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5f21a7dbff29407b17327d46_UserAvatar.svg" alt="">
-          </div>
-        </div>
-      </div>
+  <div class="chattext_user">
+    <h2 class="chattext user">Hello! Please call me.</h2>
+    <div class="avatar user">
+      <img src="https://assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5f21a7dbff29407b17327d46_UserAvatar.svg" alt="User Avatar">
+    </div>
+  </div>
+</div>
 
-      <!-- Chat Input -->
-      <div class="chatinput">
-        <div class="form-block w-form">
-          <form id="email-form" name="email-form" data-name="Email Form" method="get" class="chatform">
-            <input type="text" class="chatinputarea w-input" maxlength="256" name="Chat" data-name="Chat" placeholder="Please type here" id="Chat">
-            <input type="submit" value="SEND" data-wait="Please waithttps:/." class="chatbutton w-button">
-          </form>
-          <div class="w-form-done">
-            <div>Thank you! Your submission has been received!</div>
-          </div>
-          <div class="w-form-fail">
-            <div>Oops! Something went wrong while submitting the form.</div>
-          </div>
-        </div>
-      </div>
-
+<!-- Chat Input -->
+<div class="chatinput">
+  <form id="chat-form" class="chatform" action="#" method="POST">
+    <input type="text" class="chatinputarea" maxlength="256" name="chat" placeholder="Please type here" required>
+    <button type="submit" class="chatbutton">SEND</button>
+  </form>
+</div>
     </div>
   </div>
 </div>
