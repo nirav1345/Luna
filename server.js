@@ -1,11 +1,18 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+// ✅ Allow requests from your frontend
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
+
 app.use(express.static('docs'));
 
 let spotifyToken = '';
@@ -70,6 +77,6 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('✅ Server running on http://localhost:3000');
+app.listen(5000, () => {
+  console.log('✅ Server running on http://localhost:5000');
 });

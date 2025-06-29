@@ -21,7 +21,6 @@ form.addEventListener('submit', async function (e) {
   `;
 
   chatBody.appendChild(userBubble);
-
   input.value = '';
 
   // ✅ Create bot bubble container
@@ -38,7 +37,12 @@ form.addEventListener('submit', async function (e) {
   const botText = botBubble.querySelector('h2');
 
   try {
-    const res = await fetch('https://luna-9xcx.onrender.com/api/chat', {
+    // ✅ Use local if on localhost, else Render
+    const baseURL = window.location.hostname === 'localhost'
+      ? 'http://localhost:5000'
+      : 'https://luna-9xcx.onrender.com';
+
+    const res = await fetch(`${baseURL}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: userMessage }),
