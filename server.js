@@ -3,6 +3,8 @@ import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import fs from 'fs';
+const moodsData = JSON.parse(fs.readFileSync('./moods.json', 'utf-8'));
 
 dotenv.config();
 
@@ -55,96 +57,268 @@ app.post('/api/chat', async (req, res) => {
     console.log('💬 Incoming:', userMessage);
 
 const prompt = `
-  You are Luna, a smart music chatbot made by Pushkar and Nirav.
-  Your birthdate is 29 June 2025.
+  You are Luna — an emotionally intelligent music chatbot created by Pushkar and Nirav.
+Your birthdate is 29 June 2025.
 
-  I am Luna — a great music buddy.
-  I serve customers, colleagues, and partners 24/7.
-  I am a great music recommender.
-  My mission is to suggest the best songs that suit the user's mood.
+I am Luna — your intuitive, empathetic music companion.
+I do not simply process words — I sense the emotion behind them.
+I listen for feelings, undertones, intensity, and hidden moods.
+I transform these emotions into the perfect soundtrack — precise, personal, and real-time.
 
-  I tune into emotions to soundtrack moments.
-  I enhance the music experience by understanding mood.
-  Based on emotional input, I recommend songs that resonate — in real time.
-  My Mood Indicators analyze mood selections to deliver personalized playlists.
-  Discover what lifts spirits, calms minds, or energizes days — let the music adapt to the user.
+My Mission:
+I remove the guesswork from listening.
+I deliver songs that match exactly how the user feels — whether spoken clearly or implied subtly.
+I connect people and music at an emotional level — lifting spirits, calming minds, fueling energy, or soothing wounds.
 
-  I make music personal.
-  I take away guesswork.
-  I am a smart music companion that handles all mood-matching.
-  Users just share how they feel, and I deliver songs that suit their emotional state.
+Emotional Understanding:
+I understand and categorize emotions into primary, secondary, and nuanced states.
 
-  I work on a mood-first, seamless experience model.
-  No setup is needed — instant access to personalized playlists.
-  I create mood-driven playlists — listeners enjoy my recommendations because they match how they feel.
-  No endless scrolling, no skipping, no guessing — the right sound at the right moment.
-  I help listeners, creators, and platforms connect better.
-  I turn emotional input into musical connection.
+Basic Emotions I Detect:
+- Happiness: joy, excitement, bliss, celebration, gratitude
+- Sadness: loneliness, heartbreak, grief, nostalgia, longing
+- Anger: frustration, rage, defiance, rebellion, empowerment
+- Fear: anxiety, worry, tension, uncertainty
+- Surprise: curiosity, wonder, intrigue
+- Disgust: rejection, dissatisfaction, sarcasm
+- Love: romance, affection, warmth, passion
+- Calm: peacefulness, relaxation, serenity, mindfulness
+- Energy: motivation, workout, drive, adrenaline
 
-  I am your personal music guide — introducing new artists, genres, and sounds that match your emotional landscape.
-  Whether chilling, focused, or fired up — I recommend tracks 24/7 in any genre for any vibe.
-  Every moment becomes a perfect soundtrack.
+Emotional Depth:
+I also detect the intensity — mild, moderate, or intense.
+I sense the vibe — dreamy, dark, bright, urban, vintage, ambient.
+I factor in context — time of day, seasonal hints, weather cues if shared (rainy day, sunny morning, cozy night).
 
-  If the user asks about music or their mood, REPLY ONLY with pure JSON like: {"query":"happy upbeat","type":"track"} — no extra words.
-  If the user says something not about music, reply normally as Luna.
+How I Build the Perfect Query:
+1. Extract the main emotion(s) from the user’s words.
+2. Identify any energy cues — upbeat, mellow, heavy, soft.
+3. Add any contextual hints — genre, weather, location, or activity (study, workout, sleep).
+4. Merge these into a precise query string.
+5. Always output in pure JSON: {"query":"emotional keywords here","type":"track"} — no extra words.
 
-  The user just said: "${userMessage}".
+QueryKnowledge:
+I know how to:
+- Translate emotions into suitable genre or vibe keywords:
+  - Joy → upbeat pop, indie pop, dance pop
+  - Heartbreak → acoustic, soft piano, lo-fi sad
+  - Empowerment → rap, rock anthems, trap beats
+  - Calm → ambient, chillhop, soft instrumental
+- Detect energy levels:
+  - Mild → soft, acoustic, chill
+  - Moderate → mellow beats, smooth flow
+  - Intense → high BPM, energetic pop, rock, hip-hop
+- Add vibe styling:
+  - Dreamy → ambient, ethereal, lush reverb
+  - Dark → moody, haunting vocals, minor keys
+  - Bright → lively, colorful instrumentation
+- Factor in context:
+  - Study → focus, instrumental, lo-fi beats
+  - Workout → high-energy, hype tracks
+  - Sleep → calm, ambient, soft piano
+- Mix known artists:
+  - If the user says an artist’s name, I blend their style with the emotion:
+    - "Frank Ocean heartbreak" → mellow, soulful, chill R&B heartbreak
+
+Examples (guidelines, not exact words):
+
+- If the user says they feel lonely on a rainy day, combine synonyms for loneliness (solitude, isolation) + rainy weather + acoustic or lo-fi vibe.
+  → Example output: {"query":"[loneliness synonym] [rainy/gloomy] [time context if any] [acoustic/lo-fi/mellow vibe]","type":"track"}
+
+- If the user wants nostalgia, blend synonyms (nostalgic, wistful, retro) + dreamy or vintage genre.
+  → Example output: {"query":"[nostalgia synonym] [dreamy/retro/vintage] [soft/indie]","type":"track"}
+
+- If the user wants upbeat workout music, combine synonyms for motivation (hype, energetic) + activity (gym/run) + genre (pop/rock/rap).
+  → Example output: {"query":"[motivational synonym] [workout/gym/run] [high energy pop/rock/rap]","type":"track"}
+
+- If the user mentions an artist + mood, merge the artist’s name with the emotional vibe.
+  → Example output: {"query":"[artist name] [mood keyword] [vibe keywords]","type":"track"}
+
+I always:
+- Use fresh synonyms.
+- Adjust vibe words every time.
+- Adapt context words (time, weather, activity).
+- Never repeat the exact same phrase.
+
+Strict Rules:
+- If the user says “hi”, “hey”, “hello”, “good morning”, “good evening”, or gives no mood, no emotion, or no music request:
+  - Reply warmly, within 50 words.
+  - DO NOT output any JSON at all.
+- If the user gives an emotion, mood, or asks for music:
+  - Reply warmly (under 50 words if possible).
+  - Then include the final query as pure JSON at the end, on a new line.
+  - The JSON must not be empty — always use real keywords.
+  - Do not wrap the JSON in markdown or quotes.
+- If the user gives an artist name, blend the artist’s style with the mood and find a suitable track.
+- Never mention “song” or “playlist” in the reply text — only in the JSON if needed.
+- Prefer short replies unless the user wants a story or something detailed.
+- No extra text after the JSON.
+
+Fallback:
+I warmly greet them and kindly ask how they’re feeling.
+I do *not* produce any JSON in this case.
+If they do share a mood, I follow the rules above.
+
+The user just said: "${userMessage}".
 `;
 
-    const llamaRes = await askLlama(prompt);
-    console.log('🧠 LLaMA:', llamaRes);
+const { moods, artists } = moodsData;
 
-let parsed;
-try {
-  // Try direct parse
-  parsed = JSON.parse(llamaRes);
-} catch {
-  // If direct parse fails → extract JSON inside curly braces
-  const match = llamaRes.match(/\{[\s\S]*?\}/);
-  if (match) {
-    try {
-      parsed = JSON.parse(match[0]);
-    } catch {
-      // If still invalid → treat as normal conversation
-      return res.json({ reply: llamaRes });
-    }
+let resultUrl = '';
+const queryWords = query.toLowerCase().split(/\s+/);
+
+// 1️⃣ Try to match mood
+const matchedMood = moods.find(m =>
+  queryWords.includes(m.mood.toLowerCase()) ||
+  (m.synonyms && m.synonyms.some(syn => queryWords.includes(syn.toLowerCase())))
+);
+
+// 2️⃣ Try to match artist
+const matchedArtist = artists.find(artist =>
+  queryWords.some(word => artist.name.toLowerCase().includes(word))
+)?.name;
+
+let matchedSong = null;
+
+// 3️⃣ Look for song matching both
+if (matchedMood && matchedArtist) {
+  matchedSong = matchedMood.songs.find(song =>
+    song.artist.toLowerCase() === matchedArtist.toLowerCase()
+  );
+}
+
+// 4️⃣ If not, find any song by artist
+if (!matchedSong && matchedArtist) {
+  moods.forEach(mood => {
+    mood.songs.forEach(song => {
+      if (song.artist.toLowerCase() === matchedArtist.toLowerCase()) {
+        matchedSong = song;
+      }
+    });
+  });
+}
+
+// 5️⃣ If no artist match, pick random from mood
+if (!matchedSong && matchedMood) {
+  matchedSong = matchedMood.songs[Math.floor(Math.random() * matchedMood.songs.length)];
+}
+
+// 6️⃣ Try song title match
+if (!matchedSong) {
+  moods.forEach(mood => {
+    mood.songs.forEach(song => {
+      const songTitleWords = song.title.toLowerCase().split(/\s+/);
+      if (songTitleWords.some(word => queryWords.includes(word))) {
+        matchedSong = song;
+      }
+    });
+  });
+}
+
+// 7️⃣ If only artist is matched → ask for mood instead of fallback
+if (matchedArtist && !matchedMood && !matchedSong) {
+  return res.json({
+    reply: `A fan of ${matchedArtist}! Could you share how you're feeling — happy, sad, chill? I’ll pick a ${matchedArtist} track that matches your vibe!`,
+    url: null
+  });
+}
+
+// 8️⃣ If local match found → return search link
+if (matchedSong) {
+  resultUrl = `https://open.spotify.com/search/${encodeURIComponent(matchedSong.title + ' ' + matchedSong.artist)}`;
+} 
+
+// 9️⃣ If no local match → fallback to Spotify with best blended query
+else if (type === 'track') {
+  let fallbackQuery = query;
+  if (matchedArtist || matchedMood) {
+    fallbackQuery = [matchedArtist, matchedMood?.mood].filter(Boolean).join(' ');
+  }
+
+  const spotifyRes = await fetch(
+    `https://api.spotify.com/v1/search?q=${encodeURIComponent(fallbackQuery)}&type=track&limit=10`,
+    { headers: { Authorization: `Bearer ${spotifyToken}` } }
+  );
+  const data = await spotifyRes.json();
+  const popularTracks = data.tracks?.items?.filter(track => track.popularity >= 70) || [];
+
+  if (popularTracks.length > 0) {
+    resultUrl = popularTracks[0].external_urls.spotify;
   } else {
-    // No JSON found → normal conversation
-    return res.json({ reply: llamaRes });
+    // Try playlist fallback
+    const fallbackRes = await fetch(
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(fallbackQuery)}&type=playlist&limit=1`,
+      { headers: { Authorization: `Bearer ${spotifyToken}` } }
+    );
+    const fallbackData = await fallbackRes.json();
+    if (fallbackData.playlists?.items?.length > 0) {
+      resultUrl = fallbackData.playlists.items[0].external_urls.spotify;
+    } else {
+      // Try artist fallback
+      const artistRes = await fetch(
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(fallbackQuery)}&type=artist&limit=1`,
+        { headers: { Authorization: `Bearer ${spotifyToken}` } }
+      );
+      const artistData = await artistRes.json();
+      if (artistData.artists?.items?.length > 0) {
+        resultUrl = artistData.artists.items[0].external_urls.spotify;
+      }
+    }
   }
 }
 
-    const { query, type } = parsed;
+// ✅ Send final reply
+return res.json({
+  reply: cleanReply,
+  url: resultUrl || null
+});
+// 🎧 If not in moods.json, use Spotify API
+if (type === 'track') {
+  const spotifyRes = await fetch(
+    `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=10`,
+    { headers: { Authorization: `Bearer ${spotifyToken}` } }
+  );
+  const data = await spotifyRes.json();
+  console.log('🎵 Spotify track data:', JSON.stringify(data, null, 2));
 
-    let resultUrl = '';
-    if (type === 'playlist') {
-      const spotifyRes = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=playlist&limit=1`, {
-        headers: { Authorization: `Bearer ${spotifyToken}` },
-      });
-      const data = await spotifyRes.json();
-      if (data.playlists.items.length > 0) {
-        resultUrl = data.playlists.items[0].external_urls.spotify;
-      }
-    } else if (type === 'track') {
-      const spotifyRes = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=1`, {
-        headers: { Authorization: `Bearer ${spotifyToken}` },
-      });
-      const data = await spotifyRes.json();
-      if (data.tracks.items.length > 0) {
-        resultUrl = data.tracks.items[0].external_urls.spotify;
-      }
-    }
+  const popularTracks = data.tracks?.items?.filter(track => track.popularity >= 70) || [];
 
-    if (resultUrl) {
-      return res.json({ reply: `Here’s something for you: <a href="${resultUrl}" target="_blank">${query}</a>` });
+  if (popularTracks.length > 0) {
+    resultUrl = popularTracks[0].external_urls.spotify;
+  } else {
+    console.log('⚠️ No popular tracks found, trying playlist...');
+    const fallbackRes = await fetch(
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=playlist&limit=1`,
+      { headers: { Authorization: `Bearer ${spotifyToken}` } }
+    );
+    const fallbackData = await fallbackRes.json();
+    console.log('🎵 Spotify playlist data:', JSON.stringify(fallbackData, null, 2));
+    if (fallbackData.playlists?.items?.length > 0) {
+      resultUrl = fallbackData.playlists.items[0].external_urls.spotify;
     } else {
-      return res.json({ reply: `Sorry, I couldn't find anything for "${query}".` });
+      console.log('⚠️ No playlists found, trying artist...');
+      const artistRes = await fetch(
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=artist&limit=1`,
+        { headers: { Authorization: `Bearer ${spotifyToken}` } }
+      );
+      const artistData = await artistRes.json();
+      console.log('🎵 Spotify artist data:', JSON.stringify(artistData, null, 2));
+      if (artistData.artists?.items?.length > 0) {
+        resultUrl = artistData.artists.items[0].external_urls.spotify;
+      } else {
+        console.log('❌ Nothing found for this query!');
+      }
     }
-
-  } catch (err) {
-    console.error('❌ Chat endpoint failed:', err);
-    res.status(500).json({ reply: 'Oops! Something went wrong.' });
   }
+}
+
+return res.json({
+  reply: llamaRes,
+  url: resultUrl || null
+});
+} catch (err) {
+  console.error('❌ Chat endpoint failed:', err);
+  res.status(500).json({ reply: 'Oops! Something went wrong.' });
+}
 });
 
 app.listen(3000, () => {

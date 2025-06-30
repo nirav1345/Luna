@@ -1,3 +1,4 @@
+// Script.js
 const form = document.getElementById('email-form');
 const input = document.getElementById('Chat');
 const chatBody = document.querySelector('.chatbody');
@@ -51,12 +52,22 @@ form.addEventListener('submit', async function (e) {
 
     const data = await res.json();
 
-    // ✅ Smart reply
-    if (data.reply) {
-      botText.innerHTML = data.reply;
-    } else {
-      botText.textContent = `Sorry, I didn't understand that.`;
-    }
+// ✅ Smart reply
+if (data.reply && data.url) {
+  botText.innerHTML = `
+    ${data.reply}<br>
+    <a href="${data.url}" target="_blank">${data.url}</a>
+  `;
+} else if (data.reply) {
+  botText.innerHTML = data.reply;
+} else if (data.url) {
+  botText.innerHTML = `
+    Here’s your song!<br>
+    <a href="${data.url}" target="_blank">${data.url}</a>
+  `;
+} else {
+  botText.textContent = `Sorry, I didn't understand that.`;
+}
 
   } catch (err) {
     console.error('❌ Client error:', err);
