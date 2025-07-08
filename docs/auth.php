@@ -4,7 +4,6 @@ include 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // -------------------- REGISTER --------------------
     if (isset($_POST['register'])) {
         $name = trim($_POST['name']);
         $email = trim($_POST['email']);
@@ -16,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
-        // Check if email already exists
         $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -30,10 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $stmt->close();
 
-        // Hash the password securely
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        // Insert new user
         $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $name, $email, $hashed_password);
 
@@ -67,12 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
 
         if ($user) {
-            // DO NOT hash again! Use password_verify
             if (password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $conn->close();
-                header("Location: Home.php");
+                header("Location: index.php");
                 exit();
             } else {
                 $_SESSION['error_login'] = "Invalid email or password.";
