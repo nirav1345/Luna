@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+body {
+  background: url('assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5f3ea09e500fdb713cd9816e_HomeImg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.about {
+  width: 1200px; /* Desktop width */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  background: rgba(225, 225, 225, 0.105);
+  border: 1px solid rgba(225, 225, 225, 0.196);
+  backdrop-filter: blur(20px);
+  padding: 30px;
+  border-radius: 2em;
+  overflow: hidden;
+}
+
+.fish {
+  width: 300px;
+  height: auto;
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
+.text {
+  width: 100%;
+  max-width: 800px;
+  padding: 0 20px;
+  text-align: left; /* Desktop: left align */
+}
+
+.text h5 {
+  color: white;
+  font-size: 25px;
+  margin-bottom: 15px;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+}
+
+.text p {
+  color: #ffffff;
+  font-size: 19px;
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+}
+
+/* ✅ Mobile Responsive */
+@media (max-width: 768px) {
+  .about {
+    flex-direction: column;
+    width: 90%;
+    padding: 20px;
+  }
+
+  .fish {
+    margin-right: 0;
+    margin-bottom: 20px;
+    width: 80%;
+  }
+
+  .text {
+    text-align: center; /* Mobile: center align text */
+    padding: 0;
+  }
+
+  .text h5 {
+    font-size: 22px;
+  }
+
+  .text p {
+    font-size: 17px;
+  }
+}

@@ -1,0 +1,152 @@
+* {
+  font-family: 'Josefin Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+}
+
+body {
+  background: url('assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5f3ea09e500fdb713cd9816e_HomeImg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+  padding-top: 100px;
+}
+
+h1 {
+  font-size: 59px;
+  color: white;
+  font-weight: 600;
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #d2d2d2;
+  margin-bottom: 20px;
+}
+
+p, input, textarea, label {
+  color: rgb(255, 255, 255);
+  outline: none;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 5%;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Adjust the gap between text and form as needed */
+}
+
+
+.text {
+  max-width: 400px;
+  text-align: left;
+}
+
+.form {
+  width: 450px;
+  background-color: rgba(225, 225, 225, 0.105);
+  border: 1px solid rgba(225, 225, 225, 0.196);
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  border-radius: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-group {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.input-field {
+  width: 100%;
+  max-width: 380px;
+  padding: 10px;
+  margin: 5px 0;
+  border: 0;
+  border-bottom: 1px solid #ffffff;
+  background: transparent;
+  caret-color: white; 
+  color: white;
+}
+
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.59);
+}
+
+.submit-btn {
+  width: 50%;
+  max-width: 200px;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: block;
+  margin: 20px 0;
+  color: black;
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  transition: 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+a:focus, .toggle-btn:focus, .submit-btn:focus,
+button:focus, input[type="button"]:focus {
+  outline: none;
+}
+
+/* ✅ MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px;
+  }
+
+  h1 {
+    font-size: 42px;
+    text-align: center;
+  }
+
+  .content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+  }
+
+  .text {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .form {
+    width: 90%;
+  }
+
+  .input-field {
+    max-width: 100%;
+  }
+
+  .submit-btn {
+    width: 100%;
+    max-width: none;
+  }
+}

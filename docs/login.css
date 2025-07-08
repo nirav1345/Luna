@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+  font-family: 'Josefin Sans', sans-serif;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  box-sizing: border-box;
+}
+
+body {
+  background: url('assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5f3ea09e500fdb713cd9816e_HomeImg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.password-field {
+  position: relative;
+  width: 100%;
+}
+
+.password-field .input-field {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.toggle-password svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+}
+.message-box {
+  position: fixed;
+  top: 255px;
+  right: -500px;
+  background-color: rgba(225, 225, 225, 0.105);
+  border: 1px solid rgba(225, 225, 225, 0.196);
+  backdrop-filter: blur(20px);
+  padding: 30px;
+  border-radius: 2em;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: right 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 500px;
+  width: auto;
+}
+
+.message-box.active {
+  right: 80px;
+}
+
+.error,
+.success {
+  color: white;
+  font-weight: bold;
+}
+
+.hero {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-box {
+  width: 380px;
+  max-width: 90%;
+  margin-top: 80px;
+  height: 470px;
+  max-height: 90%;
+  position: relative;
+  background-color: rgba(225, 225, 225, 0.105);
+  border: 1px solid rgba(225, 225, 225, 0.196);
+  backdrop-filter: blur(20px);
+  padding: 5px;
+  border-radius: 2em;
+  overflow: hidden;
+}
+.google-btn {
+  width: 80%;
+  max-width: 300px;
+  padding: 10px 20px;
+  margin: 20px auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 0;
+  border-radius: 30px;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+  text-align: center;
+  color: black;
+}
+
+.google-btn svg {
+  margin-right: 10px;
+  flex-shrink: 0;
+  fill: black; 
+  transition: 0.3s ease;
+}
+
+.google-btn:hover {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.google-btn:hover svg {
+  fill: white; 
+}
+.button-box {
+  width: 220px;
+  margin: 40px auto;
+  position: relative;
+  background-color: rgba(225, 225, 225, 0.209);
+  box-shadow: 0 0 25px 5px #0000003b;
+  border-radius: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.toggle-btn {
+  width: 50%;
+  padding: 10px 20px;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  outline: none;
+  font-weight: 400;
+  transition: 0.3s ease;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  color: black;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+#btn {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background: white;
+  border-radius: 30px;
+  transition: 0.5s ease;
+  left: 0;
+  z-index: 1;
+}
+
+.input-group {
+  position: absolute;
+  top: 120px;
+  left: 0;
+  width: 100%;
+  padding: 0 10%;
+  transition: transform 0.5s ease;
+}
+
+#login {
+  transform: translateX(0%);
+}
+
+#register {
+  transform: translateX(100%);
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 0;
+  border-bottom: 1px solid #ffffff;
+  background: transparent;
+  caret-color: white;
+  color: white;
+}
+
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.59);
+}
+
+.submit-btn {
+  width: 80%;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: block;
+  margin: auto;
+  color: black;
+  background: white;
+  border-radius: 30px;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.check-box {
+  margin: 30px 10px 30px 0;
+}
+
+span {
+  color: white;
+  font-size: 12px;
+}
+
+@media (max-width: 480px) {
+  .form-box {
+    width: 90%;
+    margin-top: 60px;
+  }
+
+  .button-box {
+    width: 180px;
+    margin: 30px auto;
+  }
+
+  .toggle-btn {
+    font-size: 0.9em;
+    padding: 8px 10px;
+  }
+
+  .input-group {
+    padding: 0 5%;
+    top: 120px;
+  }
+
+  .message-box {
+    top: 150px;
+    right: auto;
+    left: -100%;
+    width: 90%;
+    max-width: none;
+  }
+
+  .message-box.active {
+    left: 5%;
+    right: auto;
+  }
+}

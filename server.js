@@ -161,34 +161,69 @@ If they do share a mood, I follow the rules above.
 The user just said: "${userMessage}".
 `;
 
-const { moods, artists } = moodsData;
+const llamaRes = await askLlama(prompt);
+console.log('🧠 LLaMA:', llamaRes);
+
+let parsed;
+
+// Try parsing LLaMA output
+try {
+  parsed = JSON.parse(llamaRes);
+} catch {
+  const match = llamaRes.match(/\{[\s\S]*?\}/);
+  if (match) {
+    try {
+      parsed = JSON.parse(match[0]);
+    } catch {
+      return res.json({ reply: llamaRes, url: null });
+    }
+  } else {
+    // No JSON found → casual message → send warm reply only
+    return res.json({ reply: llamaRes, url: null });
+  }
+}
+
+// No valid query → avoid lookup
+if (!parsed.query?.trim()) {
+  return res.json({ reply: llamaRes, url: null });
+}
+
+const { query, type } = parsed;
 
 let resultUrl = '';
 const queryWords = query.toLowerCase().split(/\s+/);
 
-// 1️⃣ Try to match mood
-const matchedMood = moods.find(m =>
+let matchedMood = null;
+let matchedArtist = null;
+let matchedSong = null;
+
+// Find mood
+matchedMood = moodsData.moods.find(m =>
   queryWords.includes(m.mood.toLowerCase()) ||
   (m.synonyms && m.synonyms.some(syn => queryWords.includes(syn.toLowerCase())))
 );
 
-// 2️⃣ Try to match artist
-const matchedArtist = artists.find(artist =>
-  queryWords.some(word => artist.name.toLowerCase().includes(word))
-)?.name;
+// Find artist
+moodsData.moods.forEach(mood => {
+  mood.songs.forEach(song => {
+    const artistNameWords = song.artist.toLowerCase().split(/\s+/);
+    const artistMatch = artistNameWords.some(word => queryWords.includes(word));
+    if (artistMatch) {
+      matchedArtist = song.artist;
+    }
+  });
+});
 
-let matchedSong = null;
-
-// 3️⃣ Look for song matching both
+// If both mood and artist, find song that matches both
 if (matchedMood && matchedArtist) {
   matchedSong = matchedMood.songs.find(song =>
     song.artist.toLowerCase() === matchedArtist.toLowerCase()
   );
 }
 
-// 4️⃣ If not, find any song by artist
+// If no exact song for both, find any song by artist
 if (!matchedSong && matchedArtist) {
-  moods.forEach(mood => {
+  moodsData.moods.forEach(mood => {
     mood.songs.forEach(song => {
       if (song.artist.toLowerCase() === matchedArtist.toLowerCase()) {
         matchedSong = song;
@@ -197,14 +232,14 @@ if (!matchedSong && matchedArtist) {
   });
 }
 
-// 5️⃣ If no artist match, pick random from mood
+// If only mood, get random song from mood
 if (!matchedSong && matchedMood) {
   matchedSong = matchedMood.songs[Math.floor(Math.random() * matchedMood.songs.length)];
 }
 
-// 6️⃣ Try song title match
+// If still nothing, fallback to any title match
 if (!matchedSong) {
-  moods.forEach(mood => {
+  moodsData.moods.forEach(mood => {
     mood.songs.forEach(song => {
       const songTitleWords = song.title.toLowerCase().split(/\s+/);
       if (songTitleWords.some(word => queryWords.includes(word))) {
@@ -214,63 +249,19 @@ if (!matchedSong) {
   });
 }
 
-// 7️⃣ If only artist is matched → ask for mood instead of fallback
-if (matchedArtist && !matchedMood && !matchedSong) {
-  return res.json({
-    reply: `A fan of ${matchedArtist}! Could you share how you're feeling — happy, sad, chill? I’ll pick a ${matchedArtist} track that matches your vibe!`,
-    url: null
-  });
-}
-
-// 8️⃣ If local match found → return search link
 if (matchedSong) {
   resultUrl = `https://open.spotify.com/search/${encodeURIComponent(matchedSong.title + ' ' + matchedSong.artist)}`;
-} 
-
-// 9️⃣ If no local match → fallback to Spotify with best blended query
-else if (type === 'track') {
-  let fallbackQuery = query;
-  if (matchedArtist || matchedMood) {
-    fallbackQuery = [matchedArtist, matchedMood?.mood].filter(Boolean).join(' ');
-  }
-
-  const spotifyRes = await fetch(
-    `https://api.spotify.com/v1/search?q=${encodeURIComponent(fallbackQuery)}&type=track&limit=10`,
-    { headers: { Authorization: `Bearer ${spotifyToken}` } }
-  );
-  const data = await spotifyRes.json();
-  const popularTracks = data.tracks?.items?.filter(track => track.popularity >= 70) || [];
-
-  if (popularTracks.length > 0) {
-    resultUrl = popularTracks[0].external_urls.spotify;
-  } else {
-    // Try playlist fallback
-    const fallbackRes = await fetch(
-      `https://api.spotify.com/v1/search?q=${encodeURIComponent(fallbackQuery)}&type=playlist&limit=1`,
-      { headers: { Authorization: `Bearer ${spotifyToken}` } }
-    );
-    const fallbackData = await fallbackRes.json();
-    if (fallbackData.playlists?.items?.length > 0) {
-      resultUrl = fallbackData.playlists.items[0].external_urls.spotify;
-    } else {
-      // Try artist fallback
-      const artistRes = await fetch(
-        `https://api.spotify.com/v1/search?q=${encodeURIComponent(fallbackQuery)}&type=artist&limit=1`,
-        { headers: { Authorization: `Bearer ${spotifyToken}` } }
-      );
-      const artistData = await artistRes.json();
-      if (artistData.artists?.items?.length > 0) {
-        resultUrl = artistData.artists.items[0].external_urls.spotify;
-      }
-    }
-  }
+} else {
+  resultUrl = '';
 }
 
-// ✅ Send final reply
+const cleanReply = llamaRes.replace(/\{[\s\S]*?\}/, '').trim();
+
 return res.json({
   reply: cleanReply,
-  url: resultUrl || null
+  url: resultUrl
 });
+
 // 🎧 If not in moods.json, use Spotify API
 if (type === 'track') {
   const spotifyRes = await fetch(
