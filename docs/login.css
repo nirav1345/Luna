@@ -89,8 +89,7 @@ body {
   padding: 5px;
   border-radius: 2em;
   overflow: hidden;
-}
-.google-btn {
+}.spotify-btn {
   width: 80%;
   max-width: 300px;
   padding: 10px 20px;
@@ -108,20 +107,20 @@ body {
   color: black;
 }
 
-.google-btn svg {
+.spotify-btn svg {
   margin-right: 10px;
   flex-shrink: 0;
   fill: black; 
   transition: 0.3s ease;
 }
 
-.google-btn:hover {
+.spotify-btn:hover {
   background: transparent;
   color: white;
   border: 2px solid white;
 }
 
-.google-btn:hover svg {
+.spotify-btn:hover svg {
   fill: white; 
 }
 .button-box {

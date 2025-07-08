@@ -7,7 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="Login.css" />
   <title>Login</title>
-  <link rel="icon" href="Images/favi.svg" type="image/png" />
+  <link rel="shortcut icon" type="image/x-icon" href="https://assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5fbd076b8af2de62a58babdc_Favicon.png">
+  <link rel="apple-touch-icon" href="https://assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5fbd081f7534b09e8a678e7e_WebClip.png">
   <?php include 'Lnav.php'; ?>
 </head>
 <body>
@@ -26,27 +27,28 @@
   <input type="checkbox" class="check-box" /><span>Remember Me</span>
   <button type="submit" name="login" class="submit-btn">Login</button>
 
-  <button type="button" class="google-btn" onclick="window.location.href='google_login.php'">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50" class="google-icon">
-      <path d="M 25.996094 48 C 13.3125 48 2.992188 37.683594 2.992188 25 C 2.992188 12.316406 13.3125 2 25.996094 2 C 31.742188 2 37.242188 4.128906 41.488281 7.996094 L 42.261719 8.703125 L 34.675781 16.289063 L 33.972656 15.6875 C 31.746094 13.78125 28.914063 12.730469 25.996094 12.730469 C 19.230469 12.730469 13.722656 18.234375 13.722656 25 C 13.722656 31.765625 19.230469 37.269531 25.996094 37.269531 C 30.875 37.269531 34.730469 34.777344 36.546875 30.53125 L 24.996094 30.53125 L 24.996094 20.175781 L 47.546875 20.207031 L 47.714844 21 C 48.890625 26.582031 47.949219 34.792969 43.183594 40.667969 C 39.238281 45.53125 33.457031 48 25.996094 48 Z"></path>
+  <button type="button" class="spotify-btn" onclick="window.location.href='spotify_login.php'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 64 64" class="spotify-icon">
+      <path d="M32 0C14.3 0 0 14.337 0 32c0 17.7 14.337 32 32 32 17.7 0 32-14.337 32-32S49.663 0 32 0zm14.68 46.184c-.573.956-1.797 1.223-2.753.65-7.532-4.588-16.975-5.62-28.14-3.097-1.07.23-2.14-.42-2.37-1.49s.42-2.14 1.49-2.37c12.196-2.79 22.67-1.606 31.082 3.556a2 2 0 0 1 .688 2.753zm3.9-8.717c-.726 1.185-2.256 1.53-3.44.84-8.602-5.276-21.716-6.805-31.885-3.747-1.338.382-2.714-.344-3.097-1.644-.382-1.338.344-2.714 1.682-3.097 11.622-3.517 26.074-1.835 35.976 4.244 1.147.688 1.49 2.217.765 3.403zm.344-9.1c-10.323-6.117-27.336-6.69-37.2-3.708-1.568.497-3.25-.42-3.747-1.988s.42-3.25 1.988-3.747c11.317-3.44 30.127-2.753 41.98 4.282 1.415.84 1.873 2.676 1.032 4.09-.765 1.453-2.638 1.912-4.053 1.07z" fill="#1ed760"/>
     </svg>
-    Continue with Google
+    Continue with Spotify
   </button>
 </form>
 
-    <form id="register" class="input-group" action="auth.php" method="POST">
-      <input type="text" class="input-field" name="name" placeholder="Name" required />
-      <input type="email" class="input-field" name="email" placeholder="Email" required />
-      <input type="password" class="input-field" name="password" placeholder="Enter Password" required />
-      <input type="checkbox" class="check-box" required /><span>I agree to the terms & conditions</span>
-      <button type="submit" name="register" class="submit-btn">Register</button>
-        <button type="button" class="google-btn" onclick="window.location.href='google_login.php'">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50" class="google-icon">
-      <path d="M 25.996094 48 C 13.3125 48 2.992188 37.683594 2.992188 25 C 2.992188 12.316406 13.3125 2 25.996094 2 C 31.742188 2 37.242188 4.128906 41.488281 7.996094 L 42.261719 8.703125 L 34.675781 16.289063 L 33.972656 15.6875 C 31.746094 13.78125 28.914063 12.730469 25.996094 12.730469 C 19.230469 12.730469 13.722656 18.234375 13.722656 25 C 13.722656 31.765625 19.230469 37.269531 25.996094 37.269531 C 30.875 37.269531 34.730469 34.777344 36.546875 30.53125 L 24.996094 30.53125 L 24.996094 20.175781 L 47.546875 20.207031 L 47.714844 21 C 48.890625 26.582031 47.949219 34.792969 43.183594 40.667969 C 39.238281 45.53125 33.457031 48 25.996094 48 Z"></path>
+<form id="register" class="input-group" action="auth.php" method="POST">
+  <input type="text" class="input-field" name="name" placeholder="Name" required />
+  <input type="email" class="input-field" name="email" placeholder="Email" required />
+  <input type="password" class="input-field" name="password" placeholder="Enter Password" required />
+  <input type="checkbox" class="check-box" required /><span>I agree to the terms & conditions</span>
+  <button type="submit" name="register" class="submit-btn">Register</button>
+  
+  <button type="button" class="spotify-btn" onclick="window.location.href='spotify_login.php'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 64 64" class="spotify-icon">
+      <path d="M32 0C14.3 0 0 14.337 0 32c0 17.7 14.337 32 32 32 17.7 0 32-14.337 32-32S49.663 0 32 0zm14.68 46.184c-.573.956-1.797 1.223-2.753.65-7.532-4.588-16.975-5.62-28.14-3.097-1.07.23-2.14-.42-2.37-1.49s.42-2.14 1.49-2.37c12.196-2.79 22.67-1.606 31.082 3.556a2 2 0 0 1 .688 2.753zm3.9-8.717c-.726 1.185-2.256 1.53-3.44.84-8.602-5.276-21.716-6.805-31.885-3.747-1.338.382-2.714-.344-3.097-1.644-.382-1.338.344-2.714 1.682-3.097 11.622-3.517 26.074-1.835 35.976 4.244 1.147.688 1.49 2.217.765 3.403zm.344-9.1c-10.323-6.117-27.336-6.69-37.2-3.708-1.568.497-3.25-.42-3.747-1.988s.42-3.25 1.988-3.747c11.317-3.44 30.127-2.753 41.98 4.282 1.415.84 1.873 2.676 1.032 4.09-.765 1.453-2.638 1.912-4.053 1.07z" fill="#1ed760"/>
     </svg>
-    Sign with Google
+    Sign up with Spotify
   </button>
-    </form>
+</form>
   </div>
 </div>
   <?php

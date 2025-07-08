@@ -60,7 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="Contact.css">
   <title>Contact Us</title>
-  <link rel="icon" href="Images/favi.svg" type="image/png">
+  <link rel="shortcut icon" type="image/x-icon" href="https://assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5fbd076b8af2de62a58babdc_Favicon.png">
+  <link rel="apple-touch-icon" href="https://assets.website-files.com/5f21a3db5bf757b4a83cfd6b/5fbd081f7534b09e8a678e7e_WebClip.png">
 </head>
 <body>
 <?php include 'lnav.php'; ?>
